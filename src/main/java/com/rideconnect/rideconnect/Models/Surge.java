@@ -1,27 +1,48 @@
-package com.rideconnect.rideconnect.Entities;
+package com.rideconnect.rideconnect.Models;
 
-import com.rideconnect.rideconnect.Entities.Types.Point;
+import com.rideconnect.rideconnect.Converters.PointArrayConverter;
+import com.rideconnect.rideconnect.Models.Types.Point;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "surge")
 public class Surge {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "surgeid")
     private Integer surge_id;
+    
+    @Column(name = "area_name")
+    private String area_name;
+    
+    @Column(name = "rideid")
     private Integer ride_id;
+    
+    @Column(name = "surge_multiplier")
     private double surge_multiplier;
+    
+    @Embedded
     private Point center_coordinate;
+    
+    @Convert(converter = PointArrayConverter.class)
+    @Column(name = "surge_area", columnDefinition = "TEXT")
     private Point[] surge_area;
+    
+    @Column(name = "diameter")
     private double diameter;
 
     public Surge() {
     }
 
     public Surge(Integer surge_id, Integer ride_id, double surge_multiplier, Point center_coordinate,
-                 Point[] surge_area,
-                 double diameter) {
+                 Point[] surge_area, double diameter, String area_name) {
         this.surge_id = surge_id;
         this.ride_id = ride_id;
         this.surge_multiplier = surge_multiplier;
         this.center_coordinate = center_coordinate;
         this.surge_area = surge_area;
         this.diameter = diameter;
+        this.area_name = area_name;
     }
 
     public Integer getSurge_id() {
@@ -66,5 +87,13 @@ public class Surge {
 
     public void setDiameter(double diameter) {
         this.diameter = diameter;
+    }
+
+    public String getArea_name() {
+        return area_name;
+    }
+
+    public void setArea_name(String area_name) {
+        this.area_name = area_name;
     }
 }

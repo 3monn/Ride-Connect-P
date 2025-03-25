@@ -1,14 +1,10 @@
 package com.rideconnect.rideconnect.Repository;
 
-import org.springframework.jdbc.core.JdbcTemplate;
+import com.rideconnect.rideconnect.Models.Driver;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class DriverRepository {
-    private final JdbcTemplate jdbcTemplate;
+public interface DriverRepository extends JpaRepository<Driver, Integer>{
 
-
-    public DriverRepository(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 }

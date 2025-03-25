@@ -1,26 +1,41 @@
-package com.rideconnect.rideconnect.Entities;
+package com.rideconnect.rideconnect.Models;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "vehicle_type")
 public class Vehicle_Type {
-    private Integer Vehicle_ID; //nullable -> database genarates serial id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "vtypeid")
+    private Integer vtype_ID; // Changed from Vehicle_ID to vtype_ID to better match table column
+    
+    @Column(name = "name")
     private String name;
+    
+    @Column(name = "description")
     private String description;
+    
+    @Column(name = "base_fare")
     private Integer base_fare;
+    
+    @Column(name = "fare_multiplier")
     private Integer fare_multiplier;
 
     public Vehicle_Type() {
     }
 
-    public Vehicle_Type(Integer vehicle_ID, String name, String description, Integer base_fare,
+    public Vehicle_Type(Integer vtype_ID, String name, String description, Integer base_fare,
                         Integer fare_multiplier) {
-        Vehicle_ID = vehicle_ID;
+        this.vtype_ID = vtype_ID;
         this.name = name;
         this.description = description;
         this.base_fare = base_fare;
         this.fare_multiplier = fare_multiplier;
     }
 
-    public Integer getVehicle_ID() {
-        return Vehicle_ID;
+    public Integer getVtype_ID() {
+        return vtype_ID;
     }
 
     public String getName() {

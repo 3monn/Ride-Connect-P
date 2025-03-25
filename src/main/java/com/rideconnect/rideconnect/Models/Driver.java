@@ -1,41 +1,59 @@
-package com.rideconnect.rideconnect.Entities;
+package com.rideconnect.rideconnect.Models;
 
-import com.rideconnect.rideconnect.Entities.Types.Point;
-import org.springframework.stereotype.Component;
-
+import jakarta.persistence.*;
 import java.sql.Timestamp;
+import com.rideconnect.rideconnect.Models.Types.Point;
 
+@Entity
+@Table(name = "driver")
 public class Driver {
-    private Integer Driver_ID; //nullable -> database genarates serial id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "driverid")
+    private Integer Driver_ID;
+    
+    @Column(name = "name")
     private String name;
+    
+    @Column(name = "phone_number")
     private String phone;
+    
+    @Column(name = "email")
     private String email;
-    private String status; //???
-    private Integer Vehicle_id; //foreign key
+    
+    @Column(name = "status")
+    private String status;
+    
+    @ManyToOne // A driver has one vehicle, but a vehicle can be used by many drivers
+    @JoinColumn(name = "vehicleid")
+    private Vehicle vehicle;
+    
+    @Column(name = "license")
     private String license;
-
-    //-----------------------------------
-    //to reprensent the location of the driver point or geometry
+    
+    @Embedded
     private Point location;
+    
+    @Column(name = "last_update")
     private Timestamp last_update;
-    //-----------------------------------
 
     public Driver() {
     }
 
-    public Driver(Integer driver_ID, String name, String phone, String email, String status, Integer vehicle_id,
+    public Driver(Integer driver_ID, String name, String phone, String email, String status, Vehicle vehicle,
                   String license, Point location, Timestamp last_update) {
         Driver_ID = driver_ID;
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.status = status;
-        Vehicle_id = vehicle_id;
+        this.vehicle = vehicle;
         this.license = license;
         this.location = location;
         this.last_update = last_update;
     }
 
+    // Getters and setters
     public Integer getDriver_ID() {
         return Driver_ID;
     }
@@ -72,12 +90,12 @@ public class Driver {
         this.status = status;
     }
 
-    public Integer getVehicle_id() {
-        return Vehicle_id;
+    public Vehicle getVehicle() {
+        return vehicle;
     }
 
-    public void setVehicle_id(Integer vehicle_id) {
-        Vehicle_id = vehicle_id;
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
     }
 
     public String getLicense() {

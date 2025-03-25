@@ -1,19 +1,24 @@
-package com.rideconnect.rideconnect.Entities;
+package com.rideconnect.rideconnect.Models;
 
-import com.rideconnect.rideconnect.Entities.Types.Point;
-
+import jakarta.persistence.*;
 import java.util.Date;
+import com.rideconnect.rideconnect.Models.Types.Point;
 
+@Entity
+@Table(name = "rider")
 public class Rider {
-    private Integer Rider_ID; //nullable -> database genarates serial id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer Rider_ID;
+    
     private String name;
     private String phone;
     private String email;
-    //-----------------------------------
-    //to reprensent the location of the rider point or geometry
+    
+    @Embedded
     private Point location;
+    
     private Date last_update;
-    //-----------------------------------
 
     public Rider() {
     }
@@ -27,6 +32,9 @@ public class Rider {
         this.last_update = last_update;
     }
 
+    public void setRider_ID(Integer Rider_ID) {
+        this.Rider_ID = Rider_ID;
+    }
     public Integer getRider_ID() {
         return Rider_ID;
     }

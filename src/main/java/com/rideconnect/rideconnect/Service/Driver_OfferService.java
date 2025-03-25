@@ -1,7 +1,6 @@
 package com.rideconnect.rideconnect.Service;
 
-import com.rideconnect.rideconnect.Entities.Driver_Offer;
-import com.rideconnect.rideconnect.Entities.Ride;
+import com.rideconnect.rideconnect.Models.Driver_Offer;
 import com.rideconnect.rideconnect.Repository.Driver_OfferRepository;
 import org.springframework.stereotype.Service;
 
@@ -9,23 +8,48 @@ import java.util.List;
 
 @Service
 public class Driver_OfferService {
-    private final Driver_OfferRepository driver_offerRepository;
+    private final Driver_OfferRepository driverOfferRepository;
 
-    public Driver_OfferService(Driver_OfferRepository driverOfferRepository) {
-        driver_offerRepository = driverOfferRepository;
-    }
-    public Driver_Offer accept_offer(int offer_id, int driver_id) {
-        return driver_offerRepository.accept_offer(offer_id, driver_id);
+    Driver_OfferService(Driver_OfferRepository driverOfferRepository) {
+        this.driverOfferRepository = driverOfferRepository;
     }
 
-    public Driver_Offer save(Driver_Offer driver_offer) {
-        return driver_offerRepository.save(driver_offer);
-    }
-    public Driver_Offer send_offer_to_drivers(Ride ride) {
-        return driver_offerRepository.save(new Driver_Offer(ride));
+    @SuppressWarnings("deprecation")
+    public Driver_Offer acceptOffer(Integer offer_id, Integer driver_id) {
+        Driver_Offer offer = driverOfferRepository.getById(offer_id);//if not found will throw exception !!!!!
+        offer.setDriver_ID(driver_id);
+        offer.setStatus("Accepted");
+        return driverOfferRepository.save(offer);
+
+    } 
+    public Driver_Offer createOffer(Driver_Offer offer) {
+        return driverOfferRepository.save(offer);
+        
     }
 
-    public List<Driver_Offer> find_all_pending_offers(){
-        return driver_offerRepository.find_all_pending_offers();
+    public Driver_Offer getOfferByID(Integer offerID) {
+        return driverOfferRepository.findById(offerID).orElse(new Driver_Offer());
+    }
+
+    public void updateOffer(Driver_Offer offer) {
+        driverOfferRepository.save(offer);
+    }
+
+    public void deleteOffer(Driver_Offer offer) {
+        driverOfferRepository.delete(offer);
+    }
+    public void deleteOfferByID(Integer offerID) {
+        driverOfferRepository.deleteById(offerID);
+    }
+
+    public List<Driver_Offer> findOffersByStatus(String status) {
+        return driverOfferRepository.findByStatus(status);
+    }
+    
+    @SuppressWarnings("deprecation") 
+    public void updateStatus(String status, int offerID) {
+        Driver_Offer offer = driverOfferRepository.getById(offerID);//if not found will throw exception !!!!!
+        offer.setStatus(status);
+        driverOfferRepository.save(offer);
     }
 }

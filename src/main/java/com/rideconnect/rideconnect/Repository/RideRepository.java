@@ -1,25 +1,15 @@
 package com.rideconnect.rideconnect.Repository;
 
-import com.rideconnect.rideconnect.Entities.Ride;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.rideconnect.rideconnect.Models.Ride;
+
 @Repository
-public class RideRepository {
-    private final JdbcTemplate jdbcTemplate;
+public interface RideRepository extends JpaRepository<Ride, Integer> {
 
-
-    public RideRepository(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
-    public Ride save(Ride ride){
-        //schema not available !!!!!!
-        return ride;
-    }
-
-    public Double getFare(int ride_type){
-        String sql = "SELECT fare FROM ride_type WHERE ride_type = ?";
-        return jdbcTemplate.queryForObject(sql, Double.class, ride_type);
-    }
+  @Query("SELECT vt.fare_multiplier FROM Vehicle_Type vt WHERE vt.vtype_ID = :rideType")
+    Double getFare(@Param("rideType") int rideType);
 }

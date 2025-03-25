@@ -1,14 +1,31 @@
-package com.rideconnect.rideconnect.Entities;
+package com.rideconnect.rideconnect.Models;
 
-import org.springframework.data.relational.core.sql.In;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "vehicle")
 public class Vehicle {
-    private Integer Vehicle_ID; //nullable -> database genarates serial id;
-    private Integer Vehicle_Type_ID; //foreign key
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "vehicleid")
+    private Integer Vehicle_ID;
+    
+    @Column(name = "vtypeid")
+    private Integer Vehicle_Type_ID;
+    
+    @Column(name = "make")
     private String make;
+    
+    @Column(name = "model")
     private String model;
+    
+    @Column(name = "color")
     private String color;
+    
+    @Column(name = "plate")
     private String plate;
+    
+    @Column(name = "capacity")
     private Integer capacity;
 
     public Vehicle() {

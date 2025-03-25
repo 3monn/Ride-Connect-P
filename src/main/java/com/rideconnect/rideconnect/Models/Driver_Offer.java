@@ -1,14 +1,29 @@
-package com.rideconnect.rideconnect.Entities;
+package com.rideconnect.rideconnect.Models;
 
-
+import jakarta.persistence.*;
 import java.sql.Timestamp;
 
+@Entity
+@Table(name = "driver_offers")
 public class Driver_Offer {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "offerid")
     private Integer Offer_ID;
+    
+    @Column(name = "driverid")
     private Integer Driver_ID; // foreign key
+    
+    @Column(name = "rideid")
     private Integer Ride_ID; // foreign key
+    
+    @Column(name = "acceptancestatus")
     private String status;
+    
+    @Column(name = "acceptancetime")
     private Timestamp Accept_Time;
+    
+    @Column(name = "distance_to_pickup")
     private double distance_to_pickup;
 
     public Driver_Offer() {

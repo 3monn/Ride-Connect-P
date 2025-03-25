@@ -1,13 +1,10 @@
 package com.rideconnect.rideconnect.Repository;
 
-import org.springframework.jdbc.core.JdbcTemplate;
+import com.rideconnect.rideconnect.Models.Rider;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class RiderRepository {
-    private final JdbcTemplate jdbcTemplate;
+public interface RiderRepository extends JpaRepository<Rider, Integer> {
 
-    public RiderRepository(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 }

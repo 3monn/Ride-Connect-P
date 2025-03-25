@@ -1,39 +1,84 @@
-package com.rideconnect.rideconnect.Entities;
+package com.rideconnect.rideconnect.Models;
 
-import com.rideconnect.rideconnect.Entities.Types.Point;
-
+import com.rideconnect.rideconnect.Converters.PointArrayConverter;
+import jakarta.persistence.*;
 import java.sql.Timestamp;
+import com.rideconnect.rideconnect.Models.Types.Point;
 
+@Entity
+@Table(name = "ride")
 public class Ride {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "rideid")
     private Integer Ride_ID;
-    private Integer Rider_ID; // foreign key
-    private Integer Driver_ID; // foreign key
-    private Integer Surge_ID; // foreign key, nullable
+    
+    @ManyToOne
+    @JoinColumn(name = "riderid")
+    private Rider rider;
+    
+    @ManyToOne
+    @JoinColumn(name = "surgeid")
+    private Surge surge;
+    
+    @Column(name = "status")
     private String status;
+    
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "latitude", column = @Column(name = "pickup_latitude")),
+        @AttributeOverride(name = "longitude", column = @Column(name = "pickup_longitude"))
+    })
     private Point pickup_location;
+    
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "latitude", column = @Column(name = "dropoff_latitude")),
+        @AttributeOverride(name = "longitude", column = @Column(name = "dropoff_longitude"))
+    })
     private Point dropoff_location;
+    
+    @Column(name = "start_time")
     private Timestamp pickup_time;
+    
+    @Column(name = "dropoff_time")
     private Timestamp dropoff_time;
+    
+    @Column(name = "distance")
     private double distance;
+    
+    @Column(name = "estimated_duration")
     private double estimated_duration;
+    
+    @Column(name = "duration")
     private double duration;
+    
+    @Column(name = "estimated_fare")
     private double estimated_fare;
+    
+    @Column(name = "actual_fare")
     private double actual_fare;
+    
+    @Column(name = "created_at")
     private Timestamp created_at;
+    
+    @Convert(converter = PointArrayConverter.class)
+    @Column(name = "route", columnDefinition = "TEXT")
     private Point[] route;
+    
+    @Column(name = "total_ride_fare")
     private double total_ride_fare;
 
     public Ride() {
     }
 
-    public Ride(Integer ride_ID, Integer rider_ID, Integer driver_ID, Integer surge_ID, String status,
+    public Ride(Integer ride_ID, Rider rider, Surge surge, String status,
                 Point pickup_location, Point dropoff_location, Timestamp pickup_time, Timestamp dropoff_time,
                 double distance, double estimated_duration, double duration, double estimated_fare, double actual_fare,
                 Timestamp created_at, Point[] route, double total_ride_fare) {
         Ride_ID = ride_ID;
-        Rider_ID = rider_ID;
-        Driver_ID = driver_ID;
-        Surge_ID = surge_ID;
+        this.rider = rider;
+        this.surge = surge;
         this.status = status;
         this.pickup_location = pickup_location;
         this.dropoff_location = dropoff_location;
@@ -53,28 +98,21 @@ public class Ride {
         return Ride_ID;
     }
 
-    public Integer getRider_ID() {
-        return Rider_ID;
+    public Rider getRider() {
+        return rider;
     }
 
-    public void setRider_ID(Integer rider_ID) {
-        Rider_ID = rider_ID;
+    public void setRider(Rider rider) {
+        this.rider = rider;
     }
 
-    public Integer getDriver_ID() {
-        return Driver_ID;
+
+    public Surge getSurge() {
+        return surge;
     }
 
-    public void setDriver_ID(Integer driver_ID) {
-        Driver_ID = driver_ID;
-    }
-
-    public Integer getSurge_ID() {
-        return Surge_ID;
-    }
-
-    public void setSurge_ID(Integer surge_ID) {
-        Surge_ID = surge_ID;
+    public void setSurge(Surge surge) {
+        this.surge = surge;
     }
 
     public String getStatus() {

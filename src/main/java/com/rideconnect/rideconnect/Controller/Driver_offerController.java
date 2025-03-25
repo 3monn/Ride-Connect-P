@@ -1,8 +1,7 @@
 package com.rideconnect.rideconnect.Controller;
 
-import com.rideconnect.rideconnect.Entities.Driver_Offer;
+import com.rideconnect.rideconnect.Models.Driver_Offer;
 import com.rideconnect.rideconnect.Service.Driver_OfferService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +18,7 @@ public class Driver_offerController {
         this.driver_offerService = driver_offerService;
     }
     @PostMapping("/accept_offer")
-    public Driver_Offer accept_offer(@Param("offer_id") int offer_id, @Param("driver_id") int driver_id) {
-        return driver_offerService.accept_offer(offer_id, driver_id);
+    public Driver_Offer accept_offer(@Param("offer_id") Integer offer_id, @Param("driver_id") Integer driver_id) {
+        return driver_offerService.acceptOffer(offer_id, driver_id);
     }
 }
