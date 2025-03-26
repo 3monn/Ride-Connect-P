@@ -12,6 +12,7 @@ public class Driver {
     @Column(name = "driverid")
     private Integer Driver_ID;
     
+
     @Column(name = "name")
     private String name;
     

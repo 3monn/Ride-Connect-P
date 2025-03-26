@@ -75,6 +75,9 @@ public class RideService {
     @SuppressWarnings("unused")
     private double calculateFare(Ride ride, Integer ride_type) { // genarate random fare
         Random rand = new Random();
+        
+        //is ride in surge area ? -> get surge multiplier from surge service 
+
         return switch (ride_type) {
             case 1 -> (Math.round(rand.nextDouble(10, 100) * 100.0) / 100.0) * 0.9; // saver
             case 2 -> Math.round(rand.nextDouble(10, 100) * 100.0) / 100.0; // standard
@@ -86,6 +89,9 @@ public class RideService {
 
     private double calculateFare2(Ride ride, Integer ride_type) { // genarate fare based on distance
         double multiplyer = 1.4; // should be rideRepository.getFare(ride_type);
+
+        //is ride in surge area ? -> get surge multiplier from surge service 
+        
         return switch (ride_type) {
             case 1 -> multiplyer * ride.getDistance() * 0.9; // saver
             case 2 -> multiplyer * ride.getDistance(); // standard

@@ -12,60 +12,62 @@ public class Ride {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rideid")
     private Integer Ride_ID;
-    
+
+   
+
     @ManyToOne
     @JoinColumn(name = "riderid")
     private Rider rider;
-    
+
     @ManyToOne
     @JoinColumn(name = "surgeid")
     private Surge surge;
-    
+
     @Column(name = "status")
     private String status;
-    
+
     @Embedded
     @AttributeOverrides({
-        @AttributeOverride(name = "latitude", column = @Column(name = "pickup_latitude")),
-        @AttributeOverride(name = "longitude", column = @Column(name = "pickup_longitude"))
+            @AttributeOverride(name = "latitude", column = @Column(name = "pickup_latitude")),
+            @AttributeOverride(name = "longitude", column = @Column(name = "pickup_longitude"))
     })
     private Point pickup_location;
-    
+
     @Embedded
     @AttributeOverrides({
-        @AttributeOverride(name = "latitude", column = @Column(name = "dropoff_latitude")),
-        @AttributeOverride(name = "longitude", column = @Column(name = "dropoff_longitude"))
+            @AttributeOverride(name = "latitude", column = @Column(name = "dropoff_latitude")),
+            @AttributeOverride(name = "longitude", column = @Column(name = "dropoff_longitude"))
     })
     private Point dropoff_location;
-    
+
     @Column(name = "start_time")
     private Timestamp pickup_time;
-    
+
     @Column(name = "dropoff_time")
     private Timestamp dropoff_time;
-    
+
     @Column(name = "distance")
     private double distance;
-    
+
     @Column(name = "estimated_duration")
     private double estimated_duration;
-    
+
     @Column(name = "duration")
     private double duration;
-    
+
     @Column(name = "estimated_fare")
     private double estimated_fare;
-    
+
     @Column(name = "actual_fare")
     private double actual_fare;
-    
+
     @Column(name = "created_at")
     private Timestamp created_at;
-    
+
     @Convert(converter = PointArrayConverter.class)
     @Column(name = "route", columnDefinition = "TEXT")
     private Point[] route;
-    
+
     @Column(name = "total_ride_fare")
     private double total_ride_fare;
 
@@ -73,9 +75,9 @@ public class Ride {
     }
 
     public Ride(Integer ride_ID, Rider rider, Surge surge, String status,
-                Point pickup_location, Point dropoff_location, Timestamp pickup_time, Timestamp dropoff_time,
-                double distance, double estimated_duration, double duration, double estimated_fare, double actual_fare,
-                Timestamp created_at, Point[] route, double total_ride_fare) {
+            Point pickup_location, Point dropoff_location, Timestamp pickup_time, Timestamp dropoff_time,
+            double distance, double estimated_duration, double duration, double estimated_fare, double actual_fare,
+            Timestamp created_at, Point[] route, double total_ride_fare) {
         Ride_ID = ride_ID;
         this.rider = rider;
         this.surge = surge;
@@ -105,7 +107,6 @@ public class Ride {
     public void setRider(Rider rider) {
         this.rider = rider;
     }
-
 
     public Surge getSurge() {
         return surge;
