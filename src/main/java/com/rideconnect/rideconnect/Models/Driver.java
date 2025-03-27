@@ -25,7 +25,7 @@ public class Driver {
     @Column(name = "status")
     private String status;
     
-    @ManyToOne // A driver has one vehicle, but a vehicle can be used by many drivers
+    @OneToOne // A driver has one vehicle, but a vehicle can be used by many drivers
     @JoinColumn(name = "vehicleid")
     private Vehicle vehicle;
     

@@ -17,6 +17,7 @@ public class Driver_offerController {
     public Driver_offerController(Driver_OfferService driver_offerService) {
         this.driver_offerService = driver_offerService;
     }
+    
     @PostMapping("/accept_offer")
     public Driver_Offer accept_offer(@RequestParam("offer_id") Integer offer_id, @RequestParam("driver_id") Integer driver_id) {
         return driver_offerService.acceptOffer(offer_id, driver_id);
