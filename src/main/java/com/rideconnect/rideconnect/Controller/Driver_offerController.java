@@ -3,6 +3,9 @@ package com.rideconnect.rideconnect.Controller;
 import com.rideconnect.rideconnect.Models.Driver_Offer;
 import com.rideconnect.rideconnect.Service.Driver_OfferService;
 
+import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +20,11 @@ public class Driver_offerController {
 
     public Driver_offerController(Driver_OfferService driver_offerService) {
         this.driver_offerService = driver_offerService;
+    }
+
+    @GetMapping("/get_all_offers")
+    public List<Driver_Offer> getAllOffers(){
+        return driver_offerService.getAllOffers();
     }
 
     @PatchMapping("/accept_offer")

@@ -44,8 +44,8 @@ public class Driver_OfferService {
         return driverOfferRepository.findById(offerID).orElse(new Driver_Offer());
     }
 
-    public void updateOffer(Driver_Offer offer) {
-        driverOfferRepository.save(offer);
+    public List<Driver_Offer> getAllOffers() {
+        return driverOfferRepository.findAll();
     }
 
     public void deleteOffer(Driver_Offer offer) {
