@@ -3,7 +3,7 @@
 ## Features
 - **Ride Request**: Riders can request rides with specific pickup and drop-off locations.
 - **Driver Offers**: Drivers can accept ride offers
-- **Dynamic Fare Calculation**: Fares are calculated based on distance, ride and type.
+- **Dynamic Fare Calculation**: Fares are calculated based on distance, ride type.
 - **Database Integration**: Uses PostgreSQL for data persistence.
 
 ## Technologies Used
