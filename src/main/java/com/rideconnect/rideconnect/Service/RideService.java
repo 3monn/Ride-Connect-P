@@ -10,6 +10,7 @@ import com.rideconnect.rideconnect.Models.Ride;
 import com.rideconnect.rideconnect.Models.Rider;
 import com.rideconnect.rideconnect.Repository.RideRepository;
 import com.rideconnect.rideconnect.Repository.RiderRepository;
+import com.rideconnect.rideconnect.util.GeometryUtil;
 
 import org.springframework.stereotype.Service;
 
@@ -18,12 +19,11 @@ public class RideService {
     private final RideRepository rideRepository;
     private final Driver_OfferService driverOfferService;
     private final RiderRepository riderRepository;
-
+    
     RideService(RideRepository rideRepository, Driver_OfferService driverOfferService, RiderRepository riderRepository) {
         this.rideRepository = rideRepository;
         this.driverOfferService = driverOfferService;
         this.riderRepository = riderRepository;
-
     }
 
     @Transactional
@@ -42,6 +42,7 @@ public class RideService {
         // set up ride
         ride.setEstimated_fare(calculateFare2(ride, ride_type));
         ride.setStatus("Pending");
+        ride.setDistance(GeometryUtil.calculateDistance(ride.getPickupLocation(), ride.getDropoffLocation()));
         ride.setCreated_at(new Timestamp(System.currentTimeMillis()));
 
         //save ride to get id from db, since its serial

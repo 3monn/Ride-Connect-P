@@ -1,8 +1,8 @@
 package com.rideconnect.rideconnect.Models;
 
-import com.rideconnect.rideconnect.Converters.PointArrayConverter;
-import com.rideconnect.rideconnect.Models.Types.Point;
 import jakarta.persistence.*;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 
 @Entity
 @Table(name = "surge")
@@ -11,23 +11,22 @@ public class Surge {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "surgeid")
     private Integer surge_id;
-    
+
     @Column(name = "area_name")
     private String area_name;
-    
+
     @Column(name = "rideid")
     private Integer ride_id;
-    
+
     @Column(name = "surge_multiplier")
     private double surge_multiplier;
-    
-    @Embedded
+
+    @Column(name = "center_coordinate", columnDefinition = "geometry(POINT,4326)")
     private Point center_coordinate;
-    
-    @Convert(converter = PointArrayConverter.class)
-    @Column(name = "surge_area", columnDefinition = "TEXT")
-    private Point[] surge_area;
-    
+
+    @Column(name = "surge_area", columnDefinition = "geometry(POLYGON,4326)")
+    private Polygon surgeArea;
+
     @Column(name = "diameter")
     private double diameter;
 
@@ -35,12 +34,12 @@ public class Surge {
     }
 
     public Surge(Integer surge_id, Integer ride_id, double surge_multiplier, Point center_coordinate,
-                 Point[] surge_area, double diameter, String area_name) {
+                 Polygon surgeArea, double diameter, String area_name) {
         this.surge_id = surge_id;
         this.ride_id = ride_id;
         this.surge_multiplier = surge_multiplier;
         this.center_coordinate = center_coordinate;
-        this.surge_area = surge_area;
+        this.surgeArea = surgeArea;
         this.diameter = diameter;
         this.area_name = area_name;
     }
@@ -73,12 +72,12 @@ public class Surge {
         this.center_coordinate = center_coordinate;
     }
 
-    public Point[] getSurge_area() {
-        return surge_area;
+    public Polygon getSurgeArea() {
+        return surgeArea;
     }
 
-    public void setSurge_area(Point[] surge_area) {
-        this.surge_area = surge_area;
+    public void setSurgeArea(Polygon surgeArea) {
+        this.surgeArea = surgeArea;
     }
 
     public double getDiameter() {

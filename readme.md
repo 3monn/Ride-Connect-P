@@ -1,5 +1,3 @@
-
-
 ## Features
 - **Ride Request**: Riders can request rides with specific pickup and drop-off locations.
 - **Driver Offers**: Drivers can accept ride offers
@@ -13,6 +11,21 @@
 - **REST API**: Spring Web
 - **JSON Handling**: Jackson
 - **Build Tool**: Maven
+
+## Project Structure
+The application follows a standard Spring Boot architecture:
+
+src/main/java/com/rideconnect/rideconnect/ - Root package for all Java code
+
+- **Models**: Entity classes that map to database tables
+- **Repository**: JPA interfaces for database access
+- **Service**: Business logic implementation 
+- **Controller**: REST API endpoints
+- **Converters**: Custom data type conversion utilities
+
+### Data Converters
+The application includes custom JPA converters:
+- **PointArrayConverter**: Converts between spatial data (arrays of Point objects) and database string representation using JSON serialization. This allows storing complex geometry like routes and areas in standard database columns.
 
 ## Installation
 

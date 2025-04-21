@@ -1,8 +1,8 @@
 package com.rideconnect.rideconnect.Models;
 
 import jakarta.persistence.*;
+import org.locationtech.jts.geom.Point;
 import java.util.Date;
-import com.rideconnect.rideconnect.Models.Types.Point;
 
 @Entity
 @Table(name = "rider")
@@ -10,14 +10,14 @@ public class Rider {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer Rider_ID;
-    
+
     private String name;
     private String phone;
     private String email;
-    
-    @Embedded
+
+    @Column(name="location", columnDefinition="geometry(POINT,4326)")
     private Point location;
-    
+
     private Date last_update;
 
     public Rider() {

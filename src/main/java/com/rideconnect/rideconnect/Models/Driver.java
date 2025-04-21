@@ -2,7 +2,7 @@ package com.rideconnect.rideconnect.Models;
 
 import jakarta.persistence.*;
 import java.sql.Timestamp;
-import com.rideconnect.rideconnect.Models.Types.Point;
+import org.locationtech.jts.geom.Point;
 
 @Entity
 @Table(name = "driver")
@@ -11,30 +11,29 @@ public class Driver {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "driverid")
     private Integer Driver_ID;
-    
 
     @Column(name = "name")
     private String name;
-    
+
     @Column(name = "phone_number")
     private String phone;
-    
+
     @Column(name = "email")
     private String email;
-    
+
     @Column(name = "status")
     private String status;
-    
-    @OneToOne // A driver has one vehicle, but a vehicle can be used by many drivers
+
+    @OneToOne
     @JoinColumn(name = "vehicleid")
     private Vehicle vehicle;
-    
+
     @Column(name = "license")
     private String license;
-    
-    @Embedded
+
+    @Column(name = "location", columnDefinition = "geometry(POINT,4326)")
     private Point location;
-    
+
     @Column(name = "last_update")
     private Timestamp last_update;
 

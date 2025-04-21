@@ -1,9 +1,9 @@
 package com.rideconnect.rideconnect.Models;
 
-import com.rideconnect.rideconnect.Converters.PointArrayConverter;
 import jakarta.persistence.*;
 import java.sql.Timestamp;
-import com.rideconnect.rideconnect.Models.Types.Point;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.LineString;
 
 @Entity
 @Table(name = "ride")
@@ -13,8 +13,6 @@ public class Ride {
     @Column(name = "rideid")
     private Integer Ride_ID;
 
-   
-
     @ManyToOne
     @JoinColumn(name = "riderid")
     private Rider rider;
@@ -23,22 +21,13 @@ public class Ride {
     @JoinColumn(name = "surgeid")
     private Surge surge;
 
-    @Column(name = "status")
     private String status;
 
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "latitude", column = @Column(name = "pickup_latitude")),
-            @AttributeOverride(name = "longitude", column = @Column(name = "pickup_longitude"))
-    })
-    private Point pickup_location;
+    @Column(name = "pickup_location", columnDefinition = "geometry(POINT,4326)")
+    private Point pickupLocation;
 
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "latitude", column = @Column(name = "dropoff_latitude")),
-            @AttributeOverride(name = "longitude", column = @Column(name = "dropoff_longitude"))
-    })
-    private Point dropoff_location;
+    @Column(name = "dropoff_location", columnDefinition = "geometry(POINT,4326)")
+    private Point dropoffLocation;
 
     @Column(name = "start_time")
     private Timestamp pickup_time;
@@ -46,44 +35,31 @@ public class Ride {
     @Column(name = "dropoff_time")
     private Timestamp dropoff_time;
 
-    @Column(name = "distance")
     private double distance;
-
-    @Column(name = "estimated_duration")
     private double estimated_duration;
-
-    @Column(name = "duration")
     private double duration;
-
-    @Column(name = "estimated_fare")
     private double estimated_fare;
-
-    @Column(name = "actual_fare")
     private double actual_fare;
-
-    @Column(name = "created_at")
     private Timestamp created_at;
 
-    @Convert(converter = PointArrayConverter.class)
-    @Column(name = "route", columnDefinition = "TEXT")
-    private Point[] route;
+    @Column(columnDefinition = "geometry(LINESTRING,4326)")
+    private LineString route;
 
-    @Column(name = "total_ride_fare")
     private double total_ride_fare;
 
     public Ride() {
     }
 
     public Ride(Integer ride_ID, Rider rider, Surge surge, String status,
-            Point pickup_location, Point dropoff_location, Timestamp pickup_time, Timestamp dropoff_time,
+            Point pickupLocation, Point dropoffLocation, Timestamp pickup_time, Timestamp dropoff_time,
             double distance, double estimated_duration, double duration, double estimated_fare, double actual_fare,
-            Timestamp created_at, Point[] route, double total_ride_fare) {
+            Timestamp created_at, LineString route, double total_ride_fare) {
         Ride_ID = ride_ID;
         this.rider = rider;
         this.surge = surge;
         this.status = status;
-        this.pickup_location = pickup_location;
-        this.dropoff_location = dropoff_location;
+        this.pickupLocation = pickupLocation;
+        this.dropoffLocation = dropoffLocation;
         this.pickup_time = pickup_time;
         this.dropoff_time = dropoff_time;
         this.distance = distance;
@@ -124,20 +100,20 @@ public class Ride {
         this.status = status;
     }
 
-    public Point getPickup_location() {
-        return pickup_location;
+    public Point getPickupLocation() {
+        return pickupLocation;
     }
 
-    public void setPickup_location(Point pickup_location) {
-        this.pickup_location = pickup_location;
+    public void setPickupLocation(Point pickupLocation) {
+        this.pickupLocation = pickupLocation;
     }
 
-    public Point getDropoff_location() {
-        return dropoff_location;
+    public Point getDropoffLocation() {
+        return dropoffLocation;
     }
 
-    public void setDropoff_location(Point dropoff_location) {
-        this.dropoff_location = dropoff_location;
+    public void setDropoffLocation(Point dropoffLocation) {
+        this.dropoffLocation = dropoffLocation;
     }
 
     public Timestamp getPickup_time() {
@@ -204,11 +180,11 @@ public class Ride {
         this.created_at = created_at;
     }
 
-    public Point[] getRoute() {
+    public LineString getRoute() {
         return route;
     }
 
-    public void setRoute(Point[] route) {
+    public void setRoute(LineString route) {
         this.route = route;
     }
 
