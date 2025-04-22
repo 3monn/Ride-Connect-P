@@ -73,6 +73,9 @@ public class RideService {
             return true;
     }
 
+    public Ride setStatus(String stat, Integer rideid) {
+         return rideRepository.updateRideStatus(rideid, stat);
+    }
     @SuppressWarnings("unused")
     private double calculateFare(Ride ride, Integer ride_type) { // genarate random fare
         Random rand = new Random();
@@ -118,5 +121,9 @@ public class RideService {
 
         return R * c;//meters
     }
+
+
+
+
 
 }

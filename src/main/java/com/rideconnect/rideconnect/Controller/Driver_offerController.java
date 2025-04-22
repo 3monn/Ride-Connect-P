@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+//json -> controller -> service -> repository -> database
 @RestController
 @RequestMapping("/api/v1/driver_offer")
 public class Driver_offerController {
@@ -28,8 +29,16 @@ public class Driver_offerController {
 
     @PatchMapping("/accept_offer")
     public Driver_Offer accept_offer(@RequestParam("offer_id") Integer offer_id,
-            @RequestParam("driver_id") Integer driver_id) {
+                                     @RequestParam("driver_id") Integer driver_id) {
         return driver_offerService.acceptOffer(offer_id, driver_id);
     }
     // http://localhost:8080/api/v1/driver_offer/accept_offer?offer_id=1&driver_id=1
 }
+/*
+* select * from offers where aoffer are pending
+* find nearsestr driver to the offer
+* send it to the nearest drivers
+* if driver accepts the offer, update the offer status to accepted
+*
+*
+* */

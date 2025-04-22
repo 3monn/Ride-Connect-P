@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/v1/ride")
 public class RideController {
     private final RideService rideService;
+    //json -> controller -> service -> repository -> database
 
     public RideController(RideService rideService) {
         this.rideService = rideService;

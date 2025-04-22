@@ -14,9 +14,10 @@ import java.util.List;
 @Service
 public class Driver_OfferService {
     private final Driver_OfferRepository driverOfferRepository;
-
-    Driver_OfferService(Driver_OfferRepository driverOfferRepository) {
+    private final RideService rideService;
+    Driver_OfferService(RideService rideService, Driver_OfferRepository driverOfferRepository) {
         this.driverOfferRepository = driverOfferRepository;
+        this.rideService = rideService;
     }
 
     @Transactional
@@ -29,6 +30,7 @@ public class Driver_OfferService {
 
         offer.setDriver_ID(driver_id);
         offer.setStatus("Accepted");
+        rideService.setStatus("in Progress", offer.getRide_ID());
         offer.setAccept_Time(new Timestamp(System.currentTimeMillis()));
 
         return driverOfferRepository.save(offer);
@@ -37,7 +39,6 @@ public class Driver_OfferService {
 
     public Driver_Offer createOffer(Driver_Offer offer) {
         return driverOfferRepository.save(offer);
-
     }
 
     public Driver_Offer getOfferByID(Integer offerID) {
