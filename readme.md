@@ -3,6 +3,7 @@
 - **Driver Offers**: Drivers can accept ride offers
 - **Dynamic Fare Calculation**: Fares are calculated based on distance, ride type.
 - **Database Integration**: Uses PostgreSQL for data persistence.
+- **Concurrency Control**: Implements database locking and transaction management.
 
 ## Technologies Used
 - **Backend**: Spring Boot (Java)
@@ -34,7 +35,9 @@ src/main/java/com/rideconnect/rideconnect/ - Root package for all Java code
 - **GET** `/api/v1/driver_offer/get_all_offers`: Retrieve all driver offers.
 - **PATCH** `/api/v1/driver_offer/accept_offer`: Accept a specific offer.
   - Parameters: `offer_id`, `driver_id`
-
+  - **Concurrency Control**: This endpoint uses the `acceptOffer` method in `Driver_OfferService`, which:
+    - Utilizes `@Transactional` for transaction management.
+    - Employs pessimistic locking via the `findIdWithLock` method in `Driver_OfferRepository` to prevent race conditions.
 
 
 
