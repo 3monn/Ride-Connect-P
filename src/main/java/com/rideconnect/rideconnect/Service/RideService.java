@@ -10,8 +10,8 @@ import com.rideconnect.rideconnect.Models.Ride;
 import com.rideconnect.rideconnect.Models.Rider;
 import com.rideconnect.rideconnect.Repository.RideRepository;
 import com.rideconnect.rideconnect.Repository.RiderRepository;
-import com.rideconnect.rideconnect.util.GeometryUtil;
 
+import org.locationtech.jts.geom.Point;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -42,7 +42,7 @@ public class RideService {
         // set up ride
         ride.setEstimated_fare(calculateFare2(ride, ride_type));
         ride.setStatus("Pending");
-        ride.setDistance(GeometryUtil.calculateDistance(ride.getPickupLocation(), ride.getDropoffLocation()));
+        ride.setDistance(calculateDistance(ride.getPickupLocation(), ride.getDropoffLocation()));
         ride.setCreated_at(new Timestamp(System.currentTimeMillis()));
 
         //save ride to get id from db, since its serial
@@ -100,6 +100,23 @@ public class RideService {
             default ->
                 throw new IllegalStateException("Couldn't Generate Fare, Ride type: " + ride_type + " not found");
         };
+    }
+    private double calculateDistance(Point point1, Point point2) {
+        final int R = 6371000; // Earth radius in meters
+        double lat1 = Math.toRadians(point1.getY());
+        double lat2 = Math.toRadians(point2.getY());
+        double lon1 = Math.toRadians(point1.getX());
+        double lon2 = Math.toRadians(point2.getX());
+
+        double dLat = lat2 - lat1;
+        double dLon = lon2 - lon1;
+
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1) * Math.cos(lat2) *
+                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return R * c;//meters
     }
 
 }
