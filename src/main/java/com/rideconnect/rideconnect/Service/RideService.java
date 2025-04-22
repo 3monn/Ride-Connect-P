@@ -20,6 +20,7 @@ public class RideService {
     private final Driver_OfferService driverOfferService;
     private final RiderRepository riderRepository;
     
+    
     RideService(RideRepository rideRepository, Driver_OfferService driverOfferService, RiderRepository riderRepository) {
         this.rideRepository = rideRepository;
         this.driverOfferService = driverOfferService;
@@ -50,7 +51,7 @@ public class RideService {
 
         //creating offer
         Driver_Offer driver_offer = new Driver_Offer(savedRide);
-        driverOfferService.createOffer(driver_offer);
+        driverOfferService.createOffersForNearDrivers(driver_offer);
 
         return savedRide;
     }

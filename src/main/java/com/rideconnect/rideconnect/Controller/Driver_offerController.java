@@ -34,11 +34,3 @@ public class Driver_offerController {
     }
     // http://localhost:8080/api/v1/driver_offer/accept_offer?offer_id=1&driver_id=1
 }
-/*
-* select * from offers where aoffer are pending
-* find nearsestr driver to the offer
-* send it to the nearest drivers
-* if driver accepts the offer, update the offer status to accepted
-*
-*
-* */

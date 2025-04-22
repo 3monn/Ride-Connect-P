@@ -1,6 +1,9 @@
 package com.rideconnect.rideconnect.Service;
 
+import com.rideconnect.rideconnect.Models.Driver;
 import com.rideconnect.rideconnect.Models.Driver_Offer;
+import com.rideconnect.rideconnect.Models.Ride;
+import com.rideconnect.rideconnect.Repository.DriverRepository;
 import com.rideconnect.rideconnect.Repository.Driver_OfferRepository;
 
 import jakarta.transaction.Transactional;
@@ -8,16 +11,22 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
-
 
 @Service
 public class Driver_OfferService {
+
     private final Driver_OfferRepository driverOfferRepository;
     private final RideService rideService;
-    Driver_OfferService(RideService rideService, Driver_OfferRepository driverOfferRepository) {
+    private final DriverRepository driverRepository;
+
+    Driver_OfferService(RideService rideService,
+            Driver_OfferRepository driverOfferRepository,
+            DriverRepository driverRepository) {
         this.driverOfferRepository = driverOfferRepository;
         this.rideService = rideService;
+        this.driverRepository = driverRepository;
     }
 
     @Transactional
@@ -39,6 +48,22 @@ public class Driver_OfferService {
 
     public Driver_Offer createOffer(Driver_Offer offer) {
         return driverOfferRepository.save(offer);
+    }
+
+    @Transactional
+    public List<Driver_Offer> createOffersForNearDrivers(Driver_Offer driver_Offer) {
+        List<Driver> nearestDrivers = findNearestDrivers(driver_Offer.getRide_ID(), 5);
+        List<Driver_Offer> createdOffers = new ArrayList<>();
+
+        for (Driver driver : nearestDrivers) {
+            Driver_Offer offer = new Driver_Offer();
+            offer.setRide_ID(driver_Offer.getRide_ID());
+            offer.setDriver_ID(driver.getDriver_ID());
+            offer.setStatus("Pending");
+
+            createdOffers.add(driverOfferRepository.save(offer));
+        }
+        return createdOffers;
     }
 
     public Driver_Offer getOfferByID(Integer offerID) {
@@ -66,5 +91,9 @@ public class Driver_OfferService {
         Driver_Offer offer = driverOfferRepository.getById(offerID);// if not found will throw exception !!!!!
         offer.setStatus(status);
         driverOfferRepository.save(offer);
+    }
+
+    public List<Driver> findNearestDrivers(int rideid, int limit) {
+        return driverRepository.findNearestAvailableDrivers(rideid, limit);
     }
 }
