@@ -35,9 +35,14 @@ src/main/java/com/rideconnect/rideconnect/ - Root package for all Java code
 - **GET** `/api/v1/driver_offer/get_all_offers`: Retrieve all driver offers.
 - **PATCH** `/api/v1/driver_offer/accept_offer`: Accept a specific offer.
   - Parameters: `offer_id`, `driver_id`
-  - **Concurrency Control**: This endpoint uses the `acceptOffer` method in `Driver_OfferService`, which:
-    - Utilizes `@Transactional` for transaction management.
-    - Employs pessimistic locking via the `findIdWithLock` method in `Driver_OfferRepository` to prevent race conditions.
+  
+### Concurrency Control
+- **Driver Offer Locking**:
+  - Each driver offer is locked using pessimistic locking (`@Lock(LockModeType.PESSIMISTIC_WRITE)`)
+- **Ride Locking**:
+  - The `Ride` row is also locked using pessimistic locking to ensure that only one driver can accept an offer for a specific ride. This prevents race conditions when multiple drivers have offers for the same ride.
+- **Transactional Boundaries**:
+  - All critical operations (e.g., accepting an offer, updating ride status) are wrapped in `@Transactional` methods.
 
 
 

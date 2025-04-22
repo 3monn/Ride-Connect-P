@@ -18,7 +18,6 @@ public class RideController {
     public Ride RideRequest(@RequestBody Ride ride, @RequestParam Integer ride_type) {
         return rideService.rideRequest(ride, ride_type);
     }
-    // - http://localhost:8080/api/v1/ride/RideRequest?ride_type=2
 
     @GetMapping("/RideRequest")
     public Ride RideTest(@RequestBody Ride ride) {

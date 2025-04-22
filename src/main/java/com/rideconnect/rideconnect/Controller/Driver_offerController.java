@@ -21,16 +21,18 @@ public class Driver_offerController {
     public Driver_offerController(Driver_OfferService driver_offerService) {
         this.driver_offerService = driver_offerService;
     }
+    
+    @PatchMapping("/accept_offer")
+    public Driver_Offer accept_offer(@RequestParam("offer_id") Integer offer_id,
+                                     @RequestParam("driver_id") Integer driver_id) {
+        return driver_offerService.acceptOffer(offer_id, driver_id);
+    }
 
     @GetMapping("/get_all_offers")
     public List<Driver_Offer> getAllOffers(){
         return driver_offerService.getAllOffers();
     }
 
-    @PatchMapping("/accept_offer")
-    public Driver_Offer accept_offer(@RequestParam("offer_id") Integer offer_id,
-                                     @RequestParam("driver_id") Integer driver_id) {
-        return driver_offerService.acceptOffer(offer_id, driver_id);
-    }
+    
     // http://localhost:8080/api/v1/driver_offer/accept_offer?offer_id=1&driver_id=1
 }

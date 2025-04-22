@@ -31,19 +31,28 @@ public class Driver_OfferService {
 
     @Transactional
     public Driver_Offer acceptOffer(Integer offer_id, Integer driver_id) {
+        // Lock the offer row
         Driver_Offer offer = driverOfferRepository.findIdWithLock(offer_id)
                 .orElseThrow(() -> new IllegalStateException("Offer not found with id: " + offer_id));
 
-        if (!"Pending".equals(offer.getStatus()))
-            throw new IllegalStateException("Offer is not pending, cannot accept it");
+        // Lock the ride row
+        Ride ride = rideService.findRideWithLock(offer.getRide_ID())
+                .orElseThrow(() -> new IllegalStateException("Ride not found with id: " + offer.getRide_ID()));
 
+        // Check if the ride is already in progress
+        if (!"Pending".equals(ride.getStatus())) {
+            throw new IllegalStateException("Ride is not pending, cannot accept the offer");
+        }
+
+        // Update the offer
         offer.setDriver_ID(driver_id);
         offer.setStatus("Accepted");
-        rideService.setStatus("in Progress", offer.getRide_ID());
         offer.setAccept_Time(new Timestamp(System.currentTimeMillis()));
 
-        return driverOfferRepository.save(offer);
+        // Update the ride status
+        rideService.setStatus("in Progress", ride.getRide_ID());
 
+        return driverOfferRepository.save(offer);
     }
 
     public Driver_Offer createOffer(Driver_Offer offer) {

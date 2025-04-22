@@ -2,6 +2,7 @@ package com.rideconnect.rideconnect.Service;
 
 import java.sql.Timestamp;
 import java.util.Random;
+import java.util.Optional;
 
 import jakarta.transaction.Transactional;
 
@@ -56,7 +57,10 @@ public class RideService {
         return savedRide;
     }
 
-        
+    @Transactional
+    public Optional<Ride> findRideWithLock(Integer rideId) {
+        return rideRepository.findRideWithLock(rideId);
+    }
 
         private boolean validate(Ride ride) {
             if (ride.getDistance() > 50 || ride.getDistance() < 1)
