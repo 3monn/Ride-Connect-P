@@ -37,12 +37,10 @@ src/main/java/com/rideconnect/rideconnect/ - Root package for all Java code
   - Parameters: `offer_id`, `driver_id`
   
 ### Concurrency Control
-- **Driver Offer Locking**:
-  - Each driver offer is locked using pessimistic locking (`@Lock(LockModeType.PESSIMISTIC_WRITE)`)
 - **Ride Locking**:
-  - The `Ride` row is also locked using pessimistic locking to ensure that only one driver can accept an offer for a specific ride. This prevents race conditions when multiple drivers have offers for the same ride.
+  - The `Ride` row is locked using pessimistic locking to ensure that only one driver can accept an offer for a specific ride. This prevents race conditions when multiple drivers have offers for the same ride.
 - **Transactional Boundaries**:
-  - All critical operations (e.g., accepting an offer, updating ride status) are wrapped in `@Transactional` methods.
+  - All critical operations are wrapped in `@Transactional` methods.
 
 
 
