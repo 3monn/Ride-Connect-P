@@ -31,11 +31,11 @@ public class Driver_OfferService {
 
     @Transactional
     public Driver_Offer acceptOffer(Integer offer_id, Integer driver_id) {
-        // Lock the offer row
-        Driver_Offer offer = driverOfferRepository.findIdWithLock(offer_id)
-                .orElseThrow(() -> new IllegalStateException("Offer not found with id: " + offer_id));
+        // find offer
+        Driver_Offer offer = driverOfferRepository.findById(driver_id)
+        .orElseThrow(() -> new IllegalStateException("Offer not found with Driver id: " + driver_id));
 
-        // Lock the ride row
+        // Lock the ride record
         Ride ride = rideService.findRideWithLock(offer.getRide_ID())
                 .orElseThrow(() -> new IllegalStateException("Ride not found with id: " + offer.getRide_ID()));
 

@@ -19,10 +19,7 @@ public interface Driver_OfferRepository extends JpaRepository<Driver_Offer, Inte
     List<Driver_Offer> findByStatus(String status);
     
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("SELECT d FROM Driver_Offer d WHERE d.Offer_ID = :offerId")
-    Optional<Driver_Offer> findIdWithLock(@Param("offerId") int offerId);
-
+    
     @Modifying
     @Transactional
     @Query("UPDATE Driver_Offer d SET d.status = 'Accepted', d.Driver_ID = :driverId WHERE d.Offer_ID = :offerId")
